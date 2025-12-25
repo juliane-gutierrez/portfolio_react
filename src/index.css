@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+@theme {
+  /* define class for borders in light and dark mode */
+  --color-border: hsl(var(--border));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-card: hsl(var(--card));
+
+  /* color for the animations */
+  --animate-float: float 6s ease-in-out infinite; /* applied in the hero section */
+  --animate-pulse-subtle: pulse-subtle 4s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.7s ease-out forwards;
+  --animate-fade-in-delay-1: fade-in 0.7s ease-out 0.2s forwards;
+  --animate-fade-in-delay-2: fade-in 0.7s ease-out 0.4s forwards;
+  --animate-fade-in-delay-3: fade-in 0.7s ease-out 0.6s forwards;
+  --animate-fade-in-delay-4: fade-in 0.7s ease-out 0.8s forwards;
+  --animate-meteor: meteor 5s linear infinite;
+
+  /* How the animation should act */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+  /* stars, means every 4s it will go from opacity 1% to 0.8. Slitly pulsating, thats what it makes an animation */
+@keyframes pulse-subtle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}  
+
+    /* apppied in text and images. from invisible to fadein from the left to the right */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  /* goes down in the screen in diagonal */
+@keyframes meteor {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-500px);
+    opacity: 0;
+  }
+}
+
+/* define the colors, root is light base */
+
+@layer base { 
+  :root {
+    --background: 210 40% 98%; 
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+
+    --primary: 250 47% 60%;
+    --primary-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+  }
+
+  .dark {
+    --background: 222 47% 4%; 
+    --foreground: 213 31% 91%;
+
+    --card: 222 47% 8%;
+
+    --primary: 250 65% 65%;
+    --primary-foreground: 213 31% 91%;
+
+    --border: 217 33% 20%;
+  }
+/* *: is to apply to everything
+border with the color border is to use the border color we created on @theme*/
+  * {
+    @apply border-border;
+  }
+
+  /* applies a smooth scrool the scrolling through the page*/
+  html {
+    @apply scroll-smooth;
+  }
+  /* uses bg and foreground colors defined in @layer base*/
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+  
+/* utility class container and media queries for different screens*/
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+
+  @media (width >= 640px) {
+    max-width: 640px;
+  }  
+  @media (width >= 768px) {
+    max-width: 768px;
+  }
+  @media (width >=1024px) {
+    max-width: 1024px;
+  }
+  @media (width >=1280px) {
+    max-width: 1280px;
+  }
+  @media (width >=1400px) {
+    max-width: 1400px;
+  }
+
+}
+
+/* @apply is from tailwindcss, @utility lets me define my own custom classes */
+@utility text-glow {
+  @apply relative;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+}
+/* by using all the combination of tailwindcss words in @apply, im adding them to the class card-hover that I created in utility */
+@utility card-hover {
+  @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
+}
+
+/* this gradient-border will be applied to my cards*/
+@utility gradient-border {
+  @apply relative rounded-md;
+  background: linear-gradient(to right, hsl(var(--card)), hsl(var(--card))); /* all colors has been defined by hsl at the beginning of the code*/
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+
+@utility cosmic-button {
+  /* in bg and text-primary i'm applying colors, but we are using the colors i defined at the @layer base*/ 
+  /* hover:scale make scale-up the button when we hover it */
+  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
+        transition-all duration-300 hover:shadow-[0_0_10px+rgba(139,92,246,0.5)]
+        hover:scale-105 active:scale-95;    
+}
+
+@utility star {
+  @apply absolute rounded-full bg-white;
+  box-shadow: 0 0 10px 2px rgba(255,255,255, 0.4);
+}
+
+/* absolute bg-linear-to-r: is how we create gradient color in tailwind 
+from white via-white to-transparent: is how the meteor disapear as they move along*/
+@utility meteor {
+  @apply absolute bg-linear-to-r from white via-white to-transparent rounded-full;
+  box-shadow: 0 0 10px 5px rgba(255,255,255, 0.3);
+}
+
+/* in react we need to add 0 in margins and addings, otherwise it will look weird with some spacing */
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+}
+}
+
