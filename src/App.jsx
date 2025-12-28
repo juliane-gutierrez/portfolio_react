@@ -1,5 +1,5 @@
 //define the router for our app
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { NotFound } from './pages/NotFound';
 
@@ -7,6 +7,7 @@ import { NotFound } from './pages/NotFound';
 function App() {
 
   return (
+    <>
     <BrowserRouter> {/*define the routes inside of it*/}
       <Routes> {/*define routes components, which I only have 2 (main page and form)*/}
         <Route index element={<Home />} /> {/*route for the main page, imported from home.jsx*/}
@@ -16,6 +17,7 @@ function App() {
       </Routes>
 
     </BrowserRouter>
+    </>
   );
 }
 
